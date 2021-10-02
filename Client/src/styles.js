@@ -8,6 +8,8 @@ export default makeStyles(() => ({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    
+    
   },
   heading: {
     color: 'black',
@@ -15,4 +17,6 @@ export default makeStyles(() => ({
   image: {
     marginLeft: '15px',
   },
+  
+
 }));
