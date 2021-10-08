@@ -3,7 +3,7 @@ import * as api from '../api';
 
 
  export const getPosts = () => async (dispatch) => {
-     try{
+     try {
          const { data } = await api.fetchPosts();
 
          dispatch( { type: FETCH_ALL, payload: data })
@@ -39,8 +39,10 @@ export const updatePost = (id,postdata) => async (dispatch) => {
         dispatch( { type: UPDATE, payload: data });
 
     } catch ( error ) {
+        
      console.log(error);
          
+
     }
 
 }

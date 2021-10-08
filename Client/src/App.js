@@ -12,7 +12,6 @@ import Auth from './components/Auth/Auth';
 const App = () =>  {
     
 
-
     return (
         <BrowserRouter>
         <Container maxidth='lg'>

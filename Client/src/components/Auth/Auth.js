@@ -7,6 +7,7 @@ import { GoogleLogin } from 'react-google-login'
 import Icon from './Icon'
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { signup , signin  } from '../../actions/auth'
 
 
 
@@ -17,7 +18,7 @@ const  Auth = () => {
     const [showPassword,setShowPassword]=useState(false);
     const [isSignup,setIsSignup]=useState(false);
     const history = useHistory();
-    const [authData,setAuthData]= useState({ firstname:'' , lastname:'' , email:'', password:'',   confirmpassword: '',});
+    const [formData,setFormData]= useState({ firstName:'' , lastName:'' , email:'', password:'',   confirmedpass: '',});
      
     const handleShowPassword = () => {
         setShowPassword((prevShowPassword) =>  !prevShowPassword);
@@ -31,12 +32,24 @@ const  Auth = () => {
 
     
 
-    const handleChange = () => {
-
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name] : e.target.value });   
     }
 
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(formData);
+        
+        if(isSignup){
+
+        dispatch(signup(formData,history));
+
+        } else {
+
+        dispatch(signin(formData,history));
+
+        }
 
     }
      const googleSuccess =  async (res) => {
@@ -44,7 +57,7 @@ const  Auth = () => {
          const result = res?.profileObj;
          const token = res?.tokenId;
          try {
-           dispatch({ type : "AUTH" , data : { result , token } })
+           dispatch({ type : "AUTH" , data : { result , token } });
            history.push('/');
          } catch (error) {
             console.log(error)
@@ -78,7 +91,7 @@ const  Auth = () => {
              {
                isSignup && ( 
                 <>
-           <Input name="password" label="repeat Password"  handleShowPassword={handleShowPassword} handleChange={handleChange} autoFocus type={showPassword ? 'text': 'password'} />
+           <Input name="confirmedpass" label="repeat Password"  handleShowPassword={handleShowPassword} handleChange={handleChange} autoFocus type={showPassword ? 'text': 'password'} />
           
                </>  
             )  

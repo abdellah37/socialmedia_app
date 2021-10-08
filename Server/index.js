@@ -5,6 +5,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import postRoutes from './routes/posts.js';
+import userRoutes from './routes/user.js';
 
 const app = express();
 dotenv.config();
@@ -19,6 +20,7 @@ app.use(cors());
 
 
 app.use('/posts' , postRoutes);
+app.use("/user" , userRoutes);
 
 //const CONNECTION_URL = 'mongodb+srv://abdo:123@cluster0.pg2y8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const PORT = process.env.PORT || 5000; 

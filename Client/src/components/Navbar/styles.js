@@ -29,16 +29,21 @@ export default makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     width: '400px',
-  },
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      width: 'auto',
+      marginTop: 20,
+      justifyContent: 'center',
+    },},
   userName: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'start',
   },
   brandContainer: {
     display: 'flex',
     alignItems: 'center',
   },
-  purple: {
+  purple:  {
     color: theme.palette.getContrastText(deepPurple[500]),
     backgroundColor: deepPurple[500],
   },

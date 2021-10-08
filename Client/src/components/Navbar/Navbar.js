@@ -1,8 +1,9 @@
 import React , {useState ,useEffect}from 'react'
 import { Link } from 'react-router-dom';
-import {   AppBar , Avatar, Toolbar, Typography ,Button  } from '@material-ui/core';
+import {   AppBar , Avatar, Toolbar, Typography ,Button , Grid } from '@material-ui/core';
 import useStyles from './styles';
 import memories from '../../Images/travel.jpg';
+import decode from 'jwt-decode';
 import { useDispatch } from 'react-redux';
 import { useHistory , useLocation } from 'react-router-dom';
 
@@ -12,18 +13,26 @@ const  Navbar = () => {
     const location = useLocation();
     const history = useHistory();
     const [user , setUser ] =useState(JSON.parse(localStorage.getItem('profile'))); 
+    console.log("user");
     console.log(user);
+    console.log("user");
+
 
     useEffect( () => {
          const token = user?.token;
-         setUser(JSON.parse(localStorage.getItem('profile')))
+
+         if(token) {
+             const decodedToken = decode(token);
+             if(decodedToken.exp * 1000 < new Date().getTime()) logout();
+         }
+         setUser(JSON.parse(localStorage.getItem('profile')));
 
 } , [location]);
 
     const logout = () => {
         setUser(null);
         dispatch({ type : "LOGOUT"});
-        history.pushState('/');
+        history.push('/Auth');
     }
 
 
@@ -37,17 +46,26 @@ const  Navbar = () => {
                    <Typography component={Link} to="/" className={classes.heading} variant="h2"  align="center" > MEMORIES </Typography>
                    <img  className={classes.image} src={memories}    alt="icon"    height="60" />
                 </div>
-                <Toolbar classeName={classes.toolbar}>
+                <Toolbar className={classes.toolbar}>
                     { user ? (
                         <div classeName={classes.profile}>
-                               <Avatar classeName={classes.purple} alt={user.result.name} src={user.result.imageUrl} > {user.result.name.charAt(0)}</Avatar>
-                               <Typography classeName={classes.userName} varaintt="h6"  > {user.result.name}</Typography>
-                               <Button classeName={classes.logout} variant="contained" color="secondary" onClick={logout}  >  LOGOUT  </Button>
+                            
+                        <Grid container spacing={2} direction="row" > 
+                        <Grid item xs={4}>
+                               <Avatar className={classes.purple} alt={user.result.name} src={user.result.imageUrl} > {user.result.name.charAt(0)}</Avatar> 
+                        </Grid>
+                        <Grid item xs={4}>
 
+                              <Typography className={classes.userName} varaintt="h6"  > {user.result.name}</Typography> 
+                        </Grid>  
+                        <Grid item xs={4}>     
+                               <Button className={classes.logout} variant="contained" color="secondary" onClick={logout}  >  LOGOUT  </Button>  
+                        </Grid>
+                        </Grid>
                         </div>
 
                     ) : (
-                      <Button  variant="contained" component={Link} to="AUTH" > Sign In    </Button>
+                      <Button  variant="contained" component={Link} to="/Auth" > Sign In    </Button>
                     )}
 
                     
