@@ -1,30 +1,32 @@
-import React, { useEffect,useState } from 'react'
-import ReactDOM from 'react-dom';
-import { Container } from '@material-ui/core';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import Home from './components/Home/Home';
-import Navbar from './components/Navbar/Navbar';
-import Auth from './components/Auth/Auth';
+import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
+import { Container } from "@material-ui/core";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import Home from "./components/Home/Home";
+import Navbar from "./components/Navbar/Navbar";
+import Auth from "./components/Auth/Auth";
+import PostDetails from "./components/PostDetails/PostDetails.js";
 
-
-
-
-const App = () =>  {
-    
-
-    return (
-        <BrowserRouter>
-        <Container maxidth='lg'>
+const App = () => {
+  const user = JSON.parse(localStorage.getItem("profile"));
+  return (
+    <BrowserRouter>
+      <Container maxidth="xl">
         <Navbar />
-        <switch>
-           <Route path="/" exact component={Home} />
-           <Route path="/Auth" exact component={Auth} />
-        </switch>
-        
-        </Container>
-        </BrowserRouter>
-        
-    );
-}
+        <Switch>
+          <Route path="/" exact component={() => <Redirect to="/posts" />} />
+          <Route path="/posts" exact component={Home} />
+          <Route path="/posts/search" exact component={Home} />
+          <Route path="/posts/:id" exact component={PostDetails} />
+          <Route
+            path="/Auth"
+            exact
+            component={() => (!user ? <Auth /> : <Redirect to="/posts" />)}
+          />
+        </Switch>
+      </Container>
+    </BrowserRouter>
+  );
+};
 
 export default App;

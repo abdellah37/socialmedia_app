@@ -9,7 +9,13 @@ import {composeWithDevTools} from 'redux-devtools-extension';
 
 import App from './App';
 
-const store = createStore(reducers , composeWithDevTools(applyMiddleware(thunk)) );
+const composeEnhancers = composeWithDevTools({
+
+    trace: true,
+    traceLimit: 25,
+  })
+
+const store = createStore(reducers , composeEnhancers(applyMiddleware(thunk)) );
 
 ReactDOM.render(<Provider store={store}>
 <App />

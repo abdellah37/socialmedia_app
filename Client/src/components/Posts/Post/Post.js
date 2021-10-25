@@ -1,20 +1,28 @@
 import React from 'react';
-import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@material-ui/core/';
+import { Card, CardActions, CardContent, CardMedia, Button, Typography,ButtonBase } from '@material-ui/core/';
+
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import moment from 'moment';
 import useStyles from './styles'
-import { useDispatch } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { deletePost , likePost } from '../../../actions/posts'
 import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined';
+import { useHistory } from "react-router-dom";
+
 
 
 const Post  = ( {post,setCurrentId} ) => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const user = JSON.parse(localStorage.getItem('profile'));
+
+    const openPost = () => {
+       history.push(`/posts/${post._id}`);
+    }
 
     const Likes = () => {
         if (post.likes.length > 0) {
@@ -31,7 +39,8 @@ const Post  = ( {post,setCurrentId} ) => {
      
 
     return (
-        <Card className={classes.card}>
+        <Card className={classes.card} raised elevation={6}>
+        <ButtonBase className={classes.cardAction} onClick={openPost} >
             <CardMedia className={classes.media} image={post.selectedFile} title={post.title} />
 
             <div className={classes.overlay} >
@@ -54,7 +63,7 @@ const Post  = ( {post,setCurrentId} ) => {
             <CardContent>
                  <Typography variant="body2" color="textSecondary" gutterBottom > {post.message}  </Typography>
             </CardContent>
-            
+            </ButtonBase>
             <CardActions className={classes.cardActions}>
                 <Button size="small" color="primary" onClick={ () => {dispatch(likePost(post._id))} }>
                     <Likes />
@@ -67,7 +76,7 @@ const Post  = ( {post,setCurrentId} ) => {
         )}
 
             </CardActions>
-
+            
         </Card>
         
     )
