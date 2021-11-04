@@ -3,7 +3,8 @@ import useStyles from "./styles";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
-import { getPost } from "../../actions/posts";
+import { getPost,getPostsBySearch } from "../../actions/posts";
+import Comment from "./Comment";
 import {
   Avatar,
   Button,
@@ -24,19 +25,34 @@ const PostDetails = () => {
  
 
   const { post, posts, isLoiding } = useSelector((state) => state.posts);
+  const recommendedPosts = posts?.filter( ({ _id }) => _id !== post?._id);
   console.log("post component details", post);
 
   useEffect(() => {
-    console.log("useeffect");
+  
     dispatch(getPost(id));
-    console.log("useeffect");
+    
   }, [id]);
+
+  useEffect(() => {
+  
+    dispatch(getPostsBySearch({ search:'none',tags: post?.tags.join(",") }));
+    
+  }, [post]);
+
+  const openPost = (id) => {
+     history.push(`/posts/${id}`);
+  }
+
+
+
+
 
   return (
     <Paper style={{ padding: "20px", borderRadius: "15px" }} elevation={6}>
       <div className={classes.card}>
         <div className={classes.section}>
-          <Typography variant="h3" component="h2">
+          <Typography variant="h3"  component="h2">
             {post?.title}
           </Typography>
           <Typography
@@ -56,12 +72,10 @@ const PostDetails = () => {
           </Typography>
           <Divider style={{ margin: "20px 0" }} />
           <Typography variant="body1">
-            <strong>Realtime Chat - coming soon!</strong>
+            <strong> Realtime Chat - coming soon! </strong>
           </Typography>
           <Divider style={{ margin: "20px 0" }} />
-          <Typography variant="body1">
-            <strong>Comments - coming soon!</strong>
-          </Typography>
+            <Comment  post={post} />
           <Divider style={{ margin: "20px 0" }} />
         </div>
         <div className={classes.imageSection}>
@@ -74,7 +88,26 @@ const PostDetails = () => {
             alt={post?.title}
           />
         </div>
-      </div>
+        </div>
+
+        {!!recommendedPosts.length && (
+        <div className={classes.section}>
+          <Typography gutterBottom variant="h5">You might also like:</Typography>
+          <Divider />
+          <div className={classes.recommendedPosts}>
+            {recommendedPosts.map(({ title, name, message, likes, selectedFile, _id }) => (
+              <div style={{ margin: '20px', cursor: 'pointer' }} onClick={() => openPost(_id)} key={_id}>
+                <Typography gutterBottom variant="h6">{title}</Typography>
+                <Typography gutterBottom variant="subtitle2">{name}</Typography>
+                <Typography gutterBottom variant="subtitle2">{message}</Typography>
+                <Typography gutterBottom variant="subtitle1">Likes: {likes.length}</Typography>
+                <img src={selectedFile} width="200px" />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      
     </Paper>
   );
 };

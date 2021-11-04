@@ -33,7 +33,7 @@ const  Navbar = () => {
     const logout = () => {
         setUser(null);
         dispatch({ type : "LOGOUT"});
-        history.push('/Auth');
+        history.push('/posts');
     }
 
 
@@ -68,7 +68,7 @@ const  Navbar = () => {
                     ) : (
 
                         
-                      <Button  variant="contained" component={Link} to="/Auth" > Sign In    </Button>
+                      <Button  variant="contained" component={Link} to="/auth" >  Sign In    </Button>
 
                       
                     )}

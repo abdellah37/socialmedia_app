@@ -5,7 +5,8 @@ import FileBase from "react-file-base64";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost, updatePost } from "../../actions/posts";
 
-const Form = ({ setCurrentId, currentId }) => {
+const Form = ({ setCurrentId, currentId , page }) => {
+  console.log("page form",page);
   const classes = useStyles();
   const dispatch = useDispatch();
   const [postData, setPostData] = useState({
@@ -28,15 +29,15 @@ const Form = ({ setCurrentId, currentId }) => {
     }
   }, [post]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+    
 
     if (currentId) {
       dispatch(
         updatePost(currentId, { ...postData, name: user?.result?.name })
       );
     } else {
-      dispatch(createPost({ ...postData, name: user?.result?.name }));
+      dispatch(createPost({ ...postData, name: user?.result?.name }, page));
     }
     setTimeout(function () {
       clear();

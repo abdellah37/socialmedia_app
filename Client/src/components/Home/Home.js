@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
-import { getPostBySearch } from "../../actions/posts";
+import {  getPostsBySearch } from "../../actions/posts";
 import { useDispatch } from "react-redux";
 import {
   Grow,
@@ -39,8 +39,8 @@ const Home = () => {
   };
 
   const searchPost = () => {
-    if (search.trim()) {
-      dispatch(getPostBySearch({ search, tags: tags.join(",") }));
+    if (search.trim() || tags) {
+      dispatch(getPostsBySearch({ search, tags: tags.join(',') }));
       history.push(
         `/posts/search?searchQuery=${search || "none"}&tags=${tags.join(",")}`
       );
@@ -63,7 +63,7 @@ const Home = () => {
 
   return (
     <Grow in>
-      <Container>
+      <Container maxWidth="xl" >
         <Grid
           container
           justify="space-between"
@@ -110,7 +110,7 @@ const Home = () => {
               </Button>
             </AppBar>
 
-            <Form currentId={currentId} setCurrentId={setCurrentId} />
+            <Form currentId={currentId} setCurrentId={setCurrentId} page={page} />
             <Paper className={classes.pagination} elevation={6}>
               <Paginate page={page} />  
             </Paper>

@@ -8,6 +8,7 @@ import {
   START_LOADING,
   END_LOADING,
   FETCH_POST,
+  CREATE_COMMENT,
 } from "../constantes/actionTypes";
 import * as api from "../api";
 
@@ -37,13 +38,13 @@ export const getPost = (id) => async (dispatch) => {
   }
 };
 
-export const getPostBySearch = (searchQuery) => async (dispatch) => {
+export const getPostsBySearch = (searchQuery) => async (dispatch) => {
   console.log("notre search query", searchQuery);
   try {
     dispatch({ type: START_LOADING });
-    const {
-      data: { data },
-    } = await api.fetchPostsBySearch(searchQuery);
+
+    const { data } = await api.fetchPostsBySearch(searchQuery);
+
     console.log("datadteb", data);
 
     dispatch({ type: SELECTED_POSTS, payload: data });
@@ -53,12 +54,31 @@ export const getPostBySearch = (searchQuery) => async (dispatch) => {
   }
 };
 
-export const createPost = (post) => async (dispatch) => {
+export const createPost = (post, page) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
+    console.log("page action", page);
+    console.log("postaction", post);
+
     const { data } = await api.createPost(post);
+
+
     dispatch({ type: CREATE, payload: data });
+
+    dispatch({ type: END_LOADING });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const createComment = (value, id) => async (dispatch) => {
+  try {
     dispatch({ type: START_LOADING });
+    const { data } = await api.createComment(value, id);
+    console.log("maymknch", data);
+    dispatch({ type: CREATE_COMMENT, payload: data });
+    dispatch({ type: END_LOADING });
+    return data.comments;
   } catch (error) {
     console.log(error.message);
   }

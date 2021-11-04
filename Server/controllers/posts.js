@@ -36,7 +36,6 @@ export const getPost = async (req, res) => {
 
   try {
     const post = await PostMessage.findById(_id);
-    
 
     res.status(200).json(post);
   } catch (error) {
@@ -46,7 +45,8 @@ export const getPost = async (req, res) => {
 
 export const searchposts = async (req, res) => {
   const { searchQuery, tags } = req.query;
-  console.log("back data ",searchQuery);
+  console.log("back data ", searchQuery);
+  console.log("back data é", tags);
 
   try {
     const title = new RegExp(searchQuery, "i");
@@ -57,7 +57,7 @@ export const searchposts = async (req, res) => {
 
     res.status(200).json({ data: posts });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ message: error });
   }
 };
 
@@ -71,7 +71,7 @@ export const createPosts = async (req, res) => {
   });
   try {
     await newPost.save();
-    res.status(201).json({ message: "insertion reussi" });
+    res.status(201).json(newPost);
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
@@ -119,6 +119,22 @@ export const likePost = async (req, res) => {
   } else {
     post.likes = post.likes.filter((id) => id !== String(req.userId));
   }
+
+  const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {
+    new: true,
+  });
+
+  res.json(updatedPost);
+};
+
+export const createComment = async (req, res) => {
+  const { id } = req.params;
+  const { comment } = req.body;
+  console.log(comment);
+
+  const post = await PostMessage.findById(id);
+
+  post.comments.push(comment);
 
   const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {
     new: true,

@@ -50,6 +50,7 @@ export default makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     textAlign: 'center',
+    fontFamily: '"Apple Color Emoji"',
   },
   brandContainer: {
     display: 'flex',
