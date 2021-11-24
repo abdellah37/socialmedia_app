@@ -6,12 +6,13 @@ import Home from "./components/Home/Home";
 import Navbar from "./components/Navbar/Navbar";
 import Auth from "./components/Auth/Auth";
 import PostDetails from "./components/PostDetails/PostDetails.js";
+import Test from "./components/Test";
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
   return (
     <BrowserRouter>
-      <Container maxidth="xl">
+      <Container maxWidth="lg">
         <Navbar />
         <Switch>
           <Route path="/" exact component={() => <Redirect to="/posts" />} />

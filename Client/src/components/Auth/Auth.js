@@ -10,9 +10,10 @@ import {
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import Input from "./Input";
+import { Alert } from '@mui/material';
 import { GoogleLogin } from "react-google-login";
 import Icon from "./Icon";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { signup, signin } from "../../actions/auth";
 
@@ -20,21 +21,30 @@ const Auth = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const [wpassword,setWpassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const history = useHistory();
   const [formData, setFormData] = useState({
     firstName: "",
-    lastName: "",
+    lastName: "", 
     email: "",
     password: "",
     confirmedpass: "",
   });
+
+  const { wrongpassword } = useSelector((state) => state.auth);
+  const { differntPass } = useSelector((state) => state.auth);
+  
+ 
+
 
   const handleShowPassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   const switchMode = () => {
+    dispatch({ type: "RESET"});
+    dispatch({ type: "RESETUP"});
     setIsSignup((prevIsSignup) => !prevIsSignup);
     setShowPassword(false);
   };
@@ -79,10 +89,25 @@ const Auth = () => {
           {" "}
           {isSignup ? "Sign Up" : "Sign In"}{" "}
         </Typography>
+         { wrongpassword && (
+           <>
+     <Alert severity="error"> Wrong Password </Alert>
+
+           </>
+         ) }
+
+      { differntPass && (
+           <>
+     <Alert severity="error"> Password mismatched </Alert>
+
+           </>
+         ) }
+
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             {isSignup && (
               <>
+              
                 <Input
                   name="firstName"
                   label="First Name"

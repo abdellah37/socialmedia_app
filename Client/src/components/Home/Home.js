@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
-import {  getPostsBySearch } from "../../actions/posts";
+import { getPostsBySearch } from "../../actions/posts";
 import { useDispatch } from "react-redux";
 import {
   Grow,
@@ -28,9 +28,8 @@ const Home = () => {
   const [tags, setTags] = useState([]);
   const query = useQuery();
   const history = useHistory();
-  const page = query.get('page') || 1;
+  const page = query.get("page") || 1;
   const classes = useStyles();
-  
 
   const handleKeyPress = (e) => {
     if (e.keyCode === 13) {
@@ -40,7 +39,7 @@ const Home = () => {
 
   const searchPost = () => {
     if (search.trim() || tags) {
-      dispatch(getPostsBySearch({ search, tags: tags.join(',') }));
+      dispatch(getPostsBySearch({ search, tags: tags.join(",") }));
       history.push(
         `/posts/search?searchQuery=${search || "none"}&tags=${tags.join(",")}`
       );
@@ -49,21 +48,19 @@ const Home = () => {
     }
   };
 
-  const handleAdd =  (tag) => {
+  const handleAdd = (tag) => {
     setTags([...tags, tag]);
     console.log(tags);
-  }
+  };
 
   const handleDelete = (tagToDelete) =>
     setTags(tags.filter((tag) => tag !== tagToDelete));
 
   console.log(currentId);
 
- 
-
   return (
     <Grow in>
-      <Container maxWidth="xl" >
+      <Container maxWidth="xl">
         <Grid
           container
           justify="space-between"
@@ -110,9 +107,13 @@ const Home = () => {
               </Button>
             </AppBar>
 
-            <Form currentId={currentId} setCurrentId={setCurrentId} page={page} />
+            <Form
+              currentId={currentId}
+              setCurrentId={setCurrentId}
+              page={page}
+            />
             <Paper className={classes.pagination} elevation={6}>
-              <Paginate page={page} />  
+              <Paginate page={page} />
             </Paper>
           </Grid>
         </Grid>

@@ -32,6 +32,7 @@ const  Navbar = () => {
 
     const logout = () => {
         setUser(null);
+        localStorage.clear();
         dispatch({ type : "LOGOUT"});
         history.push('/posts');
     }
@@ -53,11 +54,11 @@ const  Navbar = () => {
                             
                         <Grid container spacing={2} direction="row" > 
                         <Grid item xs={4}>
-                               <Avatar className={classes.purple} alt={user.result.name} src={user.result.imageUrl} > {user.result.name.charAt(0)}</Avatar> 
+                               <Avatar className={classes.purple} alt={user?.result?.name} src={user?.result?.imageUrl} > {user?.result?.name.charAt(0)}</Avatar> 
                         </Grid>
                         <Grid item xs={4}>
 
-                              <Typography className={classes.userName} varaintt="h6"  > {user.result.name}</Typography> 
+                              <Typography className={classes.userName} varaintt="h6"  > {user?.result?.name}</Typography> 
                         </Grid>  
                         <Grid item xs={4}>     
                                <Button className={classes.logout} variant="contained" color="secondary" onClick={logout}  >  LOGOUT  </Button>  
@@ -68,7 +69,7 @@ const  Navbar = () => {
                     ) : (
 
                         
-                      <Button  variant="contained" component={Link} to="/auth" >  Sign In    </Button>
+                        <Button component={Link} to="/auth" variant="contained" color="primary">Sign In</Button>
 
                       
                     )}

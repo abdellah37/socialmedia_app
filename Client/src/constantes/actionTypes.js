@@ -15,3 +15,7 @@ export const END_LOADING = 'END_LOADING';
 
 export const AUTH = 'AUTH';
 export const LOGOUT = 'LOGOUT';
+export const ERRORSIGNIN = 'ERRORSIGNIN';
+export const RESET = 'RESET';
+export const ERRORSIGNUP = 'ERRORSIGNUP';
+export const RESETUP = 'RESETUP';
