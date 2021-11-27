@@ -16,6 +16,7 @@ import Paginate from "../Pagination/Paginate";
 import ChipInput from "material-ui-chip-input";
 import { useHistory, useLocation } from "react-router-dom";
 import useStyles from "./styles";
+import {RESET,RESETUP} from "../../constantes/actionTypes";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -30,6 +31,14 @@ const Home = () => {
   const history = useHistory();
   const page = query.get("page") || 1;
   const classes = useStyles();
+
+
+  
+  useEffect(() => {
+    dispatch({ type:RESET });
+    dispatch({ type:RESETUP });
+    
+  }, []);
 
   const handleKeyPress = (e) => {
     if (e.keyCode === 13) {
